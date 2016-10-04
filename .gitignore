@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Outputs
+trueCount.txt
+.DS_Store
