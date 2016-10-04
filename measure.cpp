@@ -35,9 +35,8 @@ int main () {
     cerr << "Done reading file!" << endl;
   }
 
-  for (int row = 0; row < data.size(); row++) {
-    cout << data[row][0] << " " << data[row][1] << " " << data[row][2];
-    cout << endl;
+  for (int flowNumber = 0; flowNumber < data.size(); flowNumber++) {
+    data[flowNumber].push_back("0");
   }
 
   // True counting
