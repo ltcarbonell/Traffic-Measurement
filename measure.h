@@ -10,18 +10,6 @@ using namespace std;
 #define DESTINATION  2
 #define COUNTED  3
 
-// unsigned long hashFunction(string str) {
-//   unsigned long hash = 5381;
-//   int c;
-//
-//   for (int i = 0; i < str.size(); i++) {
-//     c = str.at(i);
-//     hash = ((hash << 5) + hash) + c;
-//   }
-//
-//   return hash;
-// }
-
 // Get the correct values of the counting
 void trueCount(vector<vector <string> > data) {
 
