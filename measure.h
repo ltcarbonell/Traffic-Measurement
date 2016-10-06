@@ -79,5 +79,9 @@ void probCounting(vector<vector <string> > data) {
 }
 
 void virtBitmap(vector<vector <string> > data) {
+  ofstream myfile;
+  myfile.open ("virtBitmapCount.txt");
+
+  myfile.close();
 
 }
