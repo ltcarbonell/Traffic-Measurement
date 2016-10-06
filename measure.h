@@ -43,7 +43,7 @@ void trueCount(vector<vector <string> > data) {
 // Count using probabalistic counting
 void probCounting(vector<vector <string> > data) {
 
-  int numberOfBits = 997;
+  int numberOfBits = 100003;
 
   vector<int> Un;
   vector<string> sourceAddresses;

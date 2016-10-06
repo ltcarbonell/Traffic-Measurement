@@ -13,7 +13,7 @@ using namespace std;
 int main () {
   vector <vector <string> > data;
   // Read in the data from the packets
-  ifstream myfile ( "packets.txt" );
+  ifstream myfile ( "packetsBig.txt" );
   while (myfile.is_open())
   {
     string s;
