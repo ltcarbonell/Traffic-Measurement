@@ -12,6 +12,7 @@ using namespace std;
 
 int main () {
   vector <vector <string> > data;
+  // Read in the data from the packets
   ifstream myfile ( "packets.txt" );
   while (myfile.is_open())
   {
@@ -35,6 +36,7 @@ int main () {
     cerr << "Done reading file!" << endl;
   }
 
+  // Add the counted index to the data
   for (int flowNumber = 0; flowNumber < data.size(); flowNumber++) {
     data[flowNumber].push_back("0");
   }
@@ -49,7 +51,7 @@ int main () {
 
   cout << "Done" <<endl;
 
-  cout << data[0][1] << " " << hashFunction(data[0][1])%997 <<endl;
+  // cout << data[0][1] << " " << hashFunction(data[0][1])%997 <<endl;
 
   return 0;
 }

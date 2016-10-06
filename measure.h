@@ -6,18 +6,19 @@
 #include <stdlib.h>
 using namespace std;
 
-unsigned long hashFunction(string str) {
-  unsigned long hash = 5381;
-  int c;
+// unsigned long hashFunction(string str) {
+//   unsigned long hash = 5381;
+//   int c;
+//
+//   for (int i = 0; i < str.size(); i++) {
+//     c = str.at(i);
+//     hash = ((hash << 5) + hash) + c;
+//   }
+//
+//   return hash;
+// }
 
-  for (int i = 0; i < str.size(); i++) {
-    c = str.at(i);
-    hash = ((hash << 5) + hash) + c;
-  }
-
-  return hash;
-}
-
+// Get the correct values of the counting
 void trueCount(vector<vector <string> > data) {
   unordered_map<string, int> occurrences;
   ofstream myfile;
@@ -35,14 +36,14 @@ void trueCount(vector<vector <string> > data) {
   myfile.close();
 }
 
+// Count using probabalistic counting
 void probCounting(vector<vector <string> > data) {
   int SOURCE = 1;
   int DESTINATION = 2;
   int COUNTED = 3;
-  double e = 2.7182818285;
-
 
   vector<int> Un;
+  vector<string> sourceAddresses;
 
   for (int flow = 0; flow < data.size(); flow++) {
     if (data[flow][COUNTED] == "0" ) {
@@ -61,15 +62,20 @@ void probCounting(vector<vector <string> > data) {
         }
       }
       Un.push_back(numOf0s);
+      sourceAddresses.push_back(data[flow][SOURCE]);
     }
-
   }
 
+  ofstream myfile;
+  myfile.open ("probCount.txt");
 
   for (int counts = 0; counts < Un.size(); counts++) {
-    cout << "U " << Un[counts] << endl;
-    cout << -997.00*log(Un[counts]/997.00) << endl;
+    myfile << sourceAddresses[counts] << "\t" << -997.00*log(Un[counts]/997.00) << endl;
   }
+
+  cout << "Counted " << Un.size() << " distinct sources." << endl;
+  myfile.close();
+
 }
 
 void virtBitmap(vector<vector <string> > data) {
