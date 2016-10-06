@@ -33,4 +33,6 @@
 
 # Outputs
 trueCount.txt
+probCount.txt
+virtBitmapCount.txt
 .DS_Store
