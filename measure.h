@@ -9,7 +9,7 @@ using namespace std;
 #define SOURCE 0
 #define DESTINATION  1
 #define COUNTED  2
-#define NUMOFBITS 977
+#define NUMOFBITS 997
 
 unsigned long hashFunction(string str) {
   unsigned long hash = 5381;
