@@ -22,6 +22,9 @@ int main () {
     istringstream ss( s );
     vector <string> record;
 
+    // remove the flow id
+    getline( ss, s, ',' );
+
     while (ss)
     {
       string s;

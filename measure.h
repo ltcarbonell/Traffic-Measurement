@@ -16,6 +16,11 @@ void trueCount(vector<vector <string> > data) {
   vector<int> counts;
   vector<string> sourceAddresses;
 
+  // Remove duplicates from the destination addresses
+  sort( data.begin(), data.end() );
+  data.erase( unique( data.begin(), data.end() ), data.end() );
+
+
   for (int flow = 0; flow < data.size(); flow++) {
     int flowCount = 0;
     if (data[flow][COUNTED] == "0" ) {
