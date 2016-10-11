@@ -53,5 +53,6 @@ int main () {
 
 
   cout << "Done" <<endl;
+  cout << data[0][0] << " " << hashFunction(data[0][0])%997 <<endl;
   return 0;
 }

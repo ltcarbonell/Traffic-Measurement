@@ -6,9 +6,23 @@
 #include <stdlib.h>
 using namespace std;
 
-#define SOURCE 1
-#define DESTINATION  2
-#define COUNTED  3
+#define SOURCE 0
+#define DESTINATION  1
+#define COUNTED  2
+#define NUMOFBITS 977
+
+unsigned long hashFunction(string str) {
+  unsigned long hash = 5381;
+  int c;
+
+  for (int i = 0; i < str.size(); i++) {
+    c = str.at(i);
+    hash = ((hash << 5) + hash) + c;
+  }
+
+  return hash;
+}
+
 
 // Get the correct values of the counting
 void trueCount(vector<vector <string> > data) {
@@ -47,18 +61,17 @@ void trueCount(vector<vector <string> > data) {
 
 // Count using probabalistic counting
 void probCounting(vector<vector <string> > data) {
-
-  int numberOfBits = 100003;
-
   vector<int> Un;
   vector<string> sourceAddresses;
 
   for (int flow = 0; flow < data.size(); flow++) {
     if (data[flow][COUNTED] == "0" ) {
-      vector<int> bitMap(numberOfBits, 0);
+      vector<int> bitMap(NUMOFBITS, 0);
       for (int index = 0; index < data.size(); index++) {
         if (data[index][SOURCE] == data[flow][SOURCE]) {
-          int hash_value = rand() % numberOfBits;
+          unsigned long hash_value = hashFunction(data[index][DESTINATION]);
+          hash_value = hash_value % NUMOFBITS;
+          // cout << hash_value << endl;
           bitMap[hash_value] = 1;
           data[index][COUNTED] = "1";
         }
@@ -76,11 +89,9 @@ void probCounting(vector<vector <string> > data) {
 
   ofstream myfile;
   myfile.open ("probCount.txt");
-
   for (int counts = 0; counts < Un.size(); counts++) {
-    myfile << sourceAddresses[counts] << "\t" << -(double)numberOfBits*log(Un[counts]/(double)numberOfBits) << endl;
+    myfile << sourceAddresses[counts] << "\t" << -(double)NUMOFBITS*log(Un[counts]/(double)NUMOFBITS) << endl;
   }
-
   cout << "Counted " << Un.size() << " distinct sources." << endl;
   myfile.close();
 
