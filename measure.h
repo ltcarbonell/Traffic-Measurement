@@ -10,6 +10,7 @@ using namespace std;
 #define DESTINATION  1
 #define COUNTED  2
 #define NUMOFBITS 997
+#define NUMOFVIRTBITS 97
 
 unsigned long hashFunction(string str) {
   unsigned long hash = 5381;
@@ -29,7 +30,6 @@ void trueCount(vector<vector <string> > data) {
   // Remove duplicates from the destination addresses
   sort( data.begin(), data.end() );
   data.erase( unique( data.begin(), data.end() ), data.end() );
-
 
   for (int flow = 0; flow < data.size(); flow++) {
     int flowCount = 0;
@@ -80,6 +80,35 @@ void probCounting(vector<vector <string> > data) {
 }
 
 void virtBitmap(vector<vector <string> > data) {
+  vector<int> bitMap(NUMOFBITS, 0);
+  vector<int> virtBitmap(NUMOFVIRTBITS, 0);
+  vector<int> randomArray(NUMOFVIRTBITS);
+
+
+  // First create an instance of an engine.
+  random_device rnd_device;
+  // Specify the engine and distribution.
+  mt19937 mersenne_engine(rnd_device());
+  uniform_int_distribution<int> dist(1, NUMOFBITS);
+
+  auto gen = std::bind(dist, mersenne_engine);
+  generate(begin(randomArray), end(randomArray), gen);
+
+  
+
+  for (int flow = 0; flow < data.size(); flow++) {
+    if (data[flow][COUNTED] == "0" ) {
+      // int i_star = hashFunction(data[flow][DESTINATION])%NUMOFVIRTBITS;
+      int src = atoi(data[flow][SOURCE].c_str());
+      unsigned long hash_value = hashFunction(to_string(src^randomArray[hashFunction(data[flow][DESTINATION]) % NUMOFVIRTBITS]));
+      hash_value = hash_value % NUMOFVIRTBITS;
+      bitMap[hash_value] = 1;
+    }
+  }
+
+  for (int index = 0; index < bitMap.size(); index++) {
+    cout << bitMap[index] << endl;
+  }
 
 
 

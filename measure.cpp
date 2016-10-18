@@ -4,6 +4,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <random>
+#include <algorithm>
+#include <iterator>
+#include <functional>
 #include "measure.h"
 using namespace std;
 
