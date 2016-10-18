@@ -26,10 +26,6 @@ unsigned long hashFunction(string str) {
 
 // Get the correct values of the counting
 void trueCount(vector<vector <string> > data) {
-
-  vector<int> counts;
-  vector<string> sourceAddresses;
-
   // Remove duplicates from the destination addresses
   sort( data.begin(), data.end() );
   data.erase( unique( data.begin(), data.end() ), data.end() );
@@ -55,9 +51,6 @@ void trueCount(vector<vector <string> > data) {
 
 // Count using probabalistic counting
 void probCounting(vector<vector <string> > data) {
-  vector<int> Un;
-  vector<string> sourceAddresses;
-
   for (int flow = 0; flow < data.size(); flow++) {
     if (data[flow][COUNTED] == "0" ) {
       vector<int> bitMap(NUMOFBITS, 0);
