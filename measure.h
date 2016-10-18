@@ -44,19 +44,13 @@ void trueCount(vector<vector <string> > data) {
           data[index][COUNTED] = "1";
         }
       }
-      counts.push_back(flowCount);
-      sourceAddresses.push_back(data[flow][SOURCE]);
+      ofstream myfile;
+      myfile.open ("trueCount.txt", ios::app);
+      myfile << data[flow][SOURCE] << "\t" << flowCount << endl;
+      myfile.close();
     }
   }
-  ofstream myfile;
-  myfile.open ("trueCount.txt");
-
-  for (int index = 0; index < sourceAddresses.size(); index++) {
-    myfile << sourceAddresses[index] << "\t" << counts[index] << endl;
-  }
-
-  cout << "Counted " << sourceAddresses.size() << " distinct sources." << endl;
-  myfile.close();
+  cout << "Done counting using true counting." << endl;
 }
 
 // Count using probabalistic counting
@@ -71,7 +65,6 @@ void probCounting(vector<vector <string> > data) {
         if (data[index][SOURCE] == data[flow][SOURCE]) {
           unsigned long hash_value = hashFunction(data[index][DESTINATION]);
           hash_value = hash_value % NUMOFBITS;
-          // cout << hash_value << endl;
           bitMap[hash_value] = 1;
           data[index][COUNTED] = "1";
         }
@@ -82,18 +75,14 @@ void probCounting(vector<vector <string> > data) {
           numOf0s += 1;
         }
       }
-      Un.push_back(numOf0s);
-      sourceAddresses.push_back(data[flow][SOURCE]);
+
+      ofstream myfile;
+      myfile.open ("probCount.txt", ios::app);
+      myfile << data[flow][SOURCE] << "\t" << -(double)NUMOFBITS*log(numOf0s/(double)NUMOFBITS) << endl;
+      myfile.close();
     }
   }
-
-  ofstream myfile;
-  myfile.open ("probCount.txt");
-  for (int counts = 0; counts < Un.size(); counts++) {
-    myfile << sourceAddresses[counts] << "\t" << -(double)NUMOFBITS*log(Un[counts]/(double)NUMOFBITS) << endl;
-  }
-  cout << "Counted " << Un.size() << " distinct sources." << endl;
-  myfile.close();
+  cout << "Estimated using probabalistic counting." << endl;
 
 }
 
