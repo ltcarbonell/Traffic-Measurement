@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <math.h>
 #include <stdlib.h>
+#include <functional>
 using namespace std;
 
 #define SOURCE 0
@@ -71,17 +72,15 @@ void probCounting(vector<vector <string> > data) {
 
       ofstream myfile;
       myfile.open ("probCount.txt", ios::app);
-      myfile << data[flow][SOURCE] << "\t" << -(double)NUMOFBITS*log(numOf0s/(double)NUMOFBITS) << endl;
+      myfile << data[flow][SOURCE] << "\t" << -(double)NUMOFBITS*log((double)numOf0s/(double)NUMOFBITS) << endl;
       myfile.close();
     }
   }
-  cout << "Estimated using probabalistic counting." << endl;
+  cout << "Done estimating using probabalistic counting." << endl;
 
 }
 
 void virtBitmap(vector<vector <string> > data) {
-  vector<int> bitMap(NUMOFBITS, 0);
-  vector<int> virtBitmap(NUMOFVIRTBITS, 0);
   vector<int> randomArray(NUMOFVIRTBITS);
 
 
@@ -91,31 +90,62 @@ void virtBitmap(vector<vector <string> > data) {
   mt19937 mersenne_engine(rnd_device());
   uniform_int_distribution<int> dist(1, NUMOFBITS);
 
-  auto gen = std::bind(dist, mersenne_engine);
+  auto gen = bind(dist, mersenne_engine);
   generate(begin(randomArray), end(randomArray), gen);
 
-  
+
 
   for (int flow = 0; flow < data.size(); flow++) {
+    vector<int> bitMap(NUMOFBITS, 0);
+    vector<int> virtBitmap(NUMOFVIRTBITS, 0);
     if (data[flow][COUNTED] == "0" ) {
-      // int i_star = hashFunction(data[flow][DESTINATION])%NUMOFVIRTBITS;
-      int src = atoi(data[flow][SOURCE].c_str());
-      unsigned long hash_value = hashFunction(to_string(src^randomArray[hashFunction(data[flow][DESTINATION]) % NUMOFVIRTBITS]));
-      hash_value = hash_value % NUMOFVIRTBITS;
-      bitMap[hash_value] = 1;
+      // Store contact in B
+      for (int index = 0; index < data.size(); index++) {
+        if (data[index][SOURCE] == data[flow][SOURCE]) {
+          // int i_star = hashFunction(data[flow][DESTINATION])%NUMOFVIRTBITS;
+          int src = atoi(data[index][SOURCE].c_str());
+          unsigned long hash_value = hashFunction(to_string(src^randomArray[hashFunction(data[index][DESTINATION]) % NUMOFVIRTBITS]));
+          hash_value = hash_value % NUMOFVIRTBITS;
+          bitMap[hash_value] = 1;
+
+          hash_value = hashFunction(data[index][DESTINATION])%NUMOFVIRTBITS;
+          // cout << "Cout hash value " << hash_value << endl;
+          virtBitmap[hash_value] = 1;
+          data[index][COUNTED] = "1";
+        }
+      }
+      // End of measurement period
+      // Spread estimation
+      int numOf0InM = 0;
+      int numOf0InS = 0;
+      for (int i = 0; i < NUMOFBITS; i++) {
+        if (bitMap[i] == 0) {
+          numOf0InM++;
+        }
+      }
+      for (int i = 0; i < NUMOFVIRTBITS; i++) {
+        if (virtBitmap[i] == 0) {
+          numOf0InS++;
+        }
+      }
+      // Estimate K and print to text file
+      ofstream myfile;
+      myfile.open ("virtBitmapCount.txt", ios::app);
+      double k1 = -((double)NUMOFVIRTBITS)*log((double)numOf0InM/(double)NUMOFBITS);
+      double k2 = -((double)NUMOFVIRTBITS)*log((double)numOf0InS/(double)NUMOFVIRTBITS);
+      // cout << "SOURCE " << data[flow][SOURCE] << endl;
+      // cout << "Number of 0 in M (Um)" << numOf0InM << endl;
+      // cout << "Number m " << NUMOFBITS << endl;
+      // cout << "Number of 0 in S (US)" << numOf0InS << endl;
+      // cout << "Number s " << NUMOFVIRTBITS << endl;
+      //
+      // cout << "K1 " << k1 << endl;
+      // cout << "K1 " << k2 << endl;
+
+      myfile << data[flow][SOURCE] << "\t" << -k1+k2 << endl;
+      myfile.close();
+
     }
   }
-
-  for (int index = 0; index < bitMap.size(); index++) {
-    cout << bitMap[index] << endl;
-  }
-
-
-
-
-  ofstream myfile;
-  myfile.open ("virtBitmapCount.txt");
-
-  myfile.close();
-
+  cout << "Done estimating using  using virtual bitmap" << endl;
 }

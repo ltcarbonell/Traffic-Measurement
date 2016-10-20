@@ -49,17 +49,20 @@ int main () {
   }
 
   // True counting
-    // clear the file
-  // ofstream myTrueFile;
-  // myTrueFile.open ("trueCount.txt");
-  // myTrueFile.close();
-  // trueCount(data);
-  // // Do the first algorithm
-  // ofstream myProbFile;
-  // myProbFile.open ("probCount.txt");
-  // myProbFile.close();
-  // probCounting(data);
+  //   clear the file
+  ofstream myTrueFile;
+  myTrueFile.open ("trueCount.txt");
+  myTrueFile.close();
+  trueCount(data);
+  // Do the first algorithm
+  ofstream myProbFile;
+  myProbFile.open ("probCount.txt");
+  myProbFile.close();
+  probCounting(data);
   // Do the second algorithm
+  ofstream myVirtFile;
+  myVirtFile.open ("virtBitmapCount.txt");
+  myVirtFile.close();
   virtBitmap(data);
 
 
